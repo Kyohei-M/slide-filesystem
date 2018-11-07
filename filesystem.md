@@ -3,7 +3,7 @@ layout: true
 class: center, middle, inverse
 
 ---
-# ファイルについて
+# ファイルとリンク
 
 ---
 layout: false
@@ -19,22 +19,23 @@ class: center, middle, inverse
 ---
 ## 対象者
 
-* Windows、Linux使用者
+* Windows、Linux使ってる
 * ファイルわからない
+* リンクわからない
 
 <br/>
 
 ## 目標
 
 * ファイル少しわかるようになる
+* リンク少しわかるようになる
 
 ---
 class: center, middle, inverse
-# ファイルシステムとは？
+# ファイル？
 
 ---
-class: font_2
-## ファイルシステムとは？
+## ファイルシステム
 
 * OS内でディスク管理を行う機能
 * ディスクのパーティション毎にフォーマットされる
