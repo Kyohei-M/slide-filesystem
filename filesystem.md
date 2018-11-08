@@ -12,9 +12,10 @@ class: center, middle
 ![twitter](twitter.png)
 
 ---
-class: center, middle, inverse
+class: center, middle
 
 # うーん…？
+![thinking](thinking.png)
 
 ---
 ## 対象者
@@ -32,14 +33,17 @@ class: center, middle, inverse
 
 ---
 class: center, middle, inverse
-# ファイル？
+# ファイルとは？
 
 ---
 ## ファイルシステム
 
-* OS内でディスク管理を行う機能
+* OS内でディスク管理を行うシステム
+* ファイルの保存、暗号化、圧縮等の機能を持つ
 * ディスクのパーティション毎にフォーマットされる
 * ファイルのメタデータを管理
+
+![filesystem](filesystem.png)
 
 ---
 ## ファイルシステムの種類
@@ -56,7 +60,9 @@ class: center, middle, inverse
 ---
 ## 分散ファイルシステム
 
+* DFS(Distributed File System)
 * 他のサーバやストレージ上に構築されているファイルシステムをネットワーク経由で利用
+* 複数のサーバーに存在する共有フォルダが、あたかも1台のサーバーに存在するように見える
 * オンラインストレージを構築後、マウント(Linux)orネットワーク共有(Windows)を行う
 
 ---
@@ -70,8 +76,17 @@ class: center, middle, inverse
 * ext4ではサイズ固定、xfsではサイズ可変
 * 特定ファイルやディレクトリのinode情報を見る場合はstatコマンド
 
-```console 
-$ stat /home/user/testfile
+```console
+$ touch testfile 
+$ stat testfile
+  File: testfile
+  Size: 5               Blocks: 1          IO Block: 65536  regular file
+Device: 461fa2c7h/1176478407d   Inode: 1407374883903937  Links: 1
+Access: (0644/-rw-r--r--)  Uid: (1055875/user)   Gid: (1049089/ UNKNOWN)
+Access: 2018-11-08 11:35:59.961116900 +0900
+Modify: 2018-11-08 11:35:59.961116900 +0900
+Change: 2018-11-08 11:35:59.961116900 +0900
+ Birth: 2018-11-08 11:35:59.961116900 +0900
 
 ```
 
@@ -84,6 +99,11 @@ $ stat /home/user/testfile
 
 ```console
 $ ls -i | cat
+ 844424930482628 directory1/
+ 844424930482629 directory2/
+1125899907193281 file1.txt
+1125899907193282 file2.txt
+ 844424930482627 file3.txt
 
 ```
 
@@ -112,10 +132,56 @@ Linuxには2種類のリンクが存在
 * 元ファイルが消されてもアクセス可能
 
 ---
-## 2つのリンクの挙動の違い
+## 2つのリンクの挙動
 
 ```console
+$ echo "This is sample." > origin
 
+$ ln -s origin symlink
+$ ln origin hardlink
+
+$ ls -i
+844424930482625 hardlink
+844424930482625 origin
+844424930482626 symlink
+
+$ rm origin #remove origin file
+
+$ ls -i
+844424930482625 hardlink
+844424930482626 symlink
+
+$ ls -la
+total 10
+drwxr-xr-x 1 k-mizumoto 1049089  0 11月  8 11:12 ./
+drwxr-xr-x 1 k-mizumoto 1049089  0 11月  8 11:10 ../
+-rw-r--r-- 1 k-mizumoto 1049089 16 11月  8 11:10 hardlink
+-rw-r--r-- 1 k-mizumoto 1049089 16 11月  8 11:10 symlink -> origin
+
+```
+
+---
+## 2つのリンクの挙動
+
+```console
+$ cat symlink
+cat: symlink: No such file or directory
+
+$ cat hardlink
+This is sample.
+
+$ ln hardlink origin #create origin file again
+
+$ cat symlink
+This is sample.
+
+$ mv origin rename #rename origin file
+
+$ cat symlink
+cat: symlink: No such file or directory
+
+$ cat hardlink
+This is sample.
 
 ```
 
@@ -127,10 +193,9 @@ class: center, middle, inverse
 ## NTFS
 
 * New Technology File System
-* Microsoft製のプロプライエタリなファイルシステム
+* Microsoft製のWindows用ファイルシステム
 * ファイルやディレクトリのメタデータを格納するためのMFTを用意
 
-<br/>
 <br/>
 
 ## MFT
@@ -198,15 +263,20 @@ C:\temp> dir
 ```
 
 ---
-class: center, middle, inverse
-## ファイル少しわかったかな？
-
----
 ## 参考  
 
 書籍  
 [インフラエンジニアの教科書2](https://www.amazon.co.jp/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%81%AE%E6%95%99%E7%A7%91%E6%9B%B82-%E3%82%B9%E3%82%AD%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97%E3%81%AB%E5%8A%B9%E3%81%8F%E6%8A%80%E8%A1%93%E3%81%A8%E7%9F%A5%E8%AD%98-%E4%BD%90%E9%87%8E-%E8%A3%95/dp/4863541864)
 
-Wikipedia  
-[ファイルシステム](https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0#Windows%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)  
-[NTFS](https://en.wikipedia.org/wiki/NTFS)
+サイト  
+[Wikipedia - ファイルシステム](https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0#Windows%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)  
+
+[Wikipedia - NTFS](https://en.wikipedia.org/wiki/NTFS)
+
+[DFSによるファイルサーバー可用性の向上](https://thinkit.co.jp/article/789/1)
+
+---
+class: center, middle
+## ファイル少しわかったかな？
+
+![angel](angel.png)
