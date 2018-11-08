@@ -123,6 +123,11 @@ Linuxには2種類のリンクが存在
 * 元ファイルやディレクトリとは異なるinode番号が付与される
 * 元ファイルやディレクトリが削除されると、リンク切れ状態になる
 
+<br/>
+
+イメージ  
+![symlink](symlink.png)
+
 ---
 ## ハードリンク
 
@@ -131,8 +136,17 @@ Linuxには2種類のリンクが存在
 * 元ファイルと同じinode番号が付与される
 * 元ファイルが消されてもアクセス可能
 
+<br/>
+
+イメージ  
+![hardlink](hardlink.png)
+
 ---
+class: center, middle, inverse
 ## 2つのリンクの挙動
+
+---
+## 元ファイル、リンクを作成
 
 ```console
 $ echo "This is sample." > origin
@@ -145,6 +159,14 @@ $ ls -i
 844424930482625 origin
 844424930482626 symlink
 
+```
+
+![step1](step1.png)
+
+---
+## 元ファイルを削除
+
+```
 $ rm origin #remove origin file
 
 $ ls -i
@@ -160,8 +182,10 @@ drwxr-xr-x 1 k-mizumoto 1049089  0 11月  8 11:10 ../
 
 ```
 
+![step2](step2.png)
+
 ---
-## 2つのリンクの挙動
+## リンクにアクセス
 
 ```console
 $ cat symlink
@@ -170,11 +194,30 @@ cat: symlink: No such file or directory
 $ cat hardlink
 This is sample.
 
+```
+
+<br/>
+
+シンボリックリンクはアクセス不可  
+ハードリンクはアクセス可  
+
+---
+## 同じ名前でファイル作成
+
+```
 $ ln hardlink origin #create origin file again
 
 $ cat symlink
 This is sample.
 
+```
+
+![step3](step3.png)
+
+---
+## ファイル名を変更
+
+```
 $ mv origin rename #rename origin file
 
 $ cat symlink
@@ -184,6 +227,8 @@ $ cat hardlink
 This is sample.
 
 ```
+
+![step4](step4.png)
 
 ---
 class: center, middle, inverse
@@ -203,6 +248,11 @@ class: center, middle, inverse
 * Master File Table
 * ファイルレコード、ファイル属性の列を持つRDB
 * パーティション毎に隠しファイル($MFT)として作られる
+
+---
+## NTFS(イメージ)
+
+![NTFS](NTFS.png)
 
 ---
 ## リンク
