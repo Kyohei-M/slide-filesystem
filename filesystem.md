@@ -217,7 +217,7 @@ This is sample.
 ハードリンクはアクセス可  
 
 ---
-## 同じ名前でファイル作成
+## 同じ名前でハードリンクを作成
 
 ```
 $ ln hardlink origin #create origin file again
